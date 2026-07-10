@@ -1,613 +1,636 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>選ぶナビ - 完全版プロトタイプ</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>選ぶナビ - 完全版プロトタイプ</title>
+	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<body class="bg-gray-100 min-h-screen flex flex-col items-center" style="font-family: 'M PLUS Rounded 1c', sans-serif;">
 
-  <div class="relative w-full max-w-md bg-white h-[640px] shadow-lg rounded-xl flex flex-col justify-between overflow-hidden">
+	<div class="relative w-full max-w-4xl bg-white md:my-6 md:shadow-lg md:rounded-xl flex flex-col justify-between overflow-hidden min-h-screen md:min-h-[640px]">
     
-    <header class="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-white z-30 sticky top-0 shrink-0">
-      <h1 id="logo" class="text-xl font-bold text-gray-800 tracking-wider cursor-pointer">選ぶナビ</h1>
+		<header class="flex justify-between items-center px-6 py-4 border-b border-green-200 bg-green-700 z-30 sticky top-0 shrink-0">
+			<div id="logo" class="cursor-pointer flex items-center select-none shrink-0 min-h-10">
+				<img src="logo2.png"  class="h-10 w-auto object-contain rounded-sm text-lg font-bold text-gray-800 tracking-wider">
+			</div>
       
-      <button id="menu-btn" class="relative p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" aria-label="メニューを開く">
-        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-        <span id="header-badge" class="hidden absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-white">0</span>
-      </button>
-    </header>
+			<button id="menu-btn" class="relative p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" aria-label="メニューを開く">
+				<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+				</svg>
+				<span id="header-badge" class="hidden absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-white">0</span>
+			</button>
+		</header>
 
-    <div id="nav-menu" class="hidden absolute inset-0 bg-black/50 z-40 flex justify-end">
-      <div class="w-2/3 bg-white h-full p-6 shadow-xl flex flex-col gap-4">
-        <div class="flex justify-between items-center mb-4">
-          <span class="font-bold text-gray-500 text-sm">メニュー</span>
-          <button id="close-btn" class="text-gray-400 hover:text-gray-600 text-xl cursor-pointer">&times;</button>
-        </div>
-        <button onclick="switchPage('top')" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">・トップ</button>
+		<div id="nav-menu" class="hidden absolute inset-0 bg-black/50 z-40 flex justify-end">
+			<div class="w-2/3 max-w-xs bg-white h-full p-6 shadow-xl flex flex-col gap-4">
+				<div class="flex justify-between items-center mb-4">
+					<span class="font-bold text-gray-500 text-sm">メニュー</span>
+					<button id="close-btn" class="text-gray-400 hover:text-gray-600 text-xl cursor-pointer">&times;</button>
+				</div>
+				<button onclick="switchPage('top')" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">トップ</button>
         
-        <button onclick="openKeepBox()" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer flex justify-between items-center">
-          <span>・お知らせ</span>
-          <span id="menu-badge" class="hidden px-2 py-0.5 rounded-full bg-red-500 text-[10px] font-bold text-white">0</span>
-        </button>
+				<button onclick="openKeepBox()" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer flex justify-between items-center">
+					<span>お知らせ</span>
+					<span id="menu-badge" class="hidden px-2 py-0.5 rounded-full bg-red-500 text-[10px] font-bold text-white">0</span>
+				</button>
 
-        <button onclick="startDiagnosticNew()" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">・診断</button>
+				<button onclick="startDiagnosticNew()" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">診断</button>
         
-        <button onclick="openKeepBox()" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">
-          <span>・保留ボックス</span>
-        </button>
+				<button onclick="openKeepBox()" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">
+					<span>保留ボックス</span>
+				</button>
         
-        <button onclick="switchPage('help')" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">・ヘルプ</button>
-      </div>
-    </div>
+				<button onclick="switchPage('help')" class="w-full text-left py-2.5 text-gray-700 font-medium hover:text-gray-900 border-b border-gray-100 cursor-pointer">ヘルプ</button>
+			</div>
+		</div>
 
-    <main id="page-top" class="page-content flex-1 flex flex-col items-center justify-center px-8 gap-5 overflow-y-auto">
-      <button id="top-notice-btn" onclick="openKeepBox()" class="w-full py-4 bg-yellow-100 border border-yellow-200 text-yellow-950 rounded-xl text-md font-medium hover:bg-yellow-200 transition-colors cursor-pointer">
-        お知らせ
-      </button>
-      <button id="start-diagnostic-btn" class="w-full py-6 bg-red-400 text-white rounded-2xl text-2xl font-extrabold tracking-widest shadow-md hover:bg-red-500 transition-colors cursor-pointer">診 断</button>
-      <button onclick="openKeepBox()" class="w-full py-5 bg-green-100 border border-green-200 text-green-900 rounded-xl text-xl font-semibold hover:bg-green-200 transition-colors cursor-pointer">保留ボックス</button>
-      <button onclick="switchPage('help')" class="w-full py-3 bg-white border border-gray-300 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer">ヘルプ</button>
-    </main>
+		<main id="page-top" class="page-content flex-1 flex flex-col items-center justify-center px-6 py-8 md:py-12 gap-5 w-full max-w-md mx-auto">
+			<button id="top-notice-btn" onclick="openKeepBox()" class="w-full py-4 bg-yellow-100 border border-yellow-200 text-yellow-950 rounded-xl text-md font-medium hover:bg-yellow-200 transition-colors cursor-pointer">
+				お知らせ
+			</button>
+			<button id="start-diagnostic-btn" class="w-full py-6 bg-red-400 text-white rounded-2xl text-2xl font-extrabold tracking-widest shadow-md hover:bg-red-500 transition-colors cursor-pointer">診 断</button>
+			<button onclick="openKeepBox()" class="w-full py-5 bg-green-100 border border-green-200 text-green-900 rounded-xl text-xl font-semibold hover:bg-green-200 transition-colors cursor-pointer">保留ボックス</button>
+			<button onclick="switchPage('help')" class="w-full py-3 bg-white border border-gray-300 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer">ヘルプ</button>
+		</main>
 
-    <main id="page-input" class="page-content hidden flex-1 flex flex-col justify-between px-6 py-6 bg-gray-50 overflow-y-auto">
-      <div class="w-full">
-        <label class="block text-gray-600 text-sm font-bold mb-2 pl-1">なにを診断しますか？</label>
-        <div class="relative flex items-center">
-          <i class="fa-solid fa-pen absolute left-4 text-gray-400"></i>
-          <input type="text" id="item-input" placeholder="例：お気に入りのコート、古い本" class="w-full pl-11 pr-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-all shadow-sm">
-        </div>
-      </div>
+		<main id="page-input" class="page-content hidden flex-1 flex flex-col justify-between px-6 py-6 bg-gray-50 w-full">
+			<div class="max-w-md mx-auto w-full flex-1 flex flex-col justify-center gap-6 py-6">
+				<div>
+					<label class="block text-gray-600 text-sm font-bold mb-2 pl-1">なにを診断しますか？</label>
+					<div class="relative flex items-center">
+						<i class="fa-solid fa-pen absolute left-4 text-gray-400"></i>
+						<input type="text" id="item-input" placeholder="例：お気に入りのコート、古い本" class="w-full pl-11 pr-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-all shadow-sm">
+					</div>
+				</div>
 
-      <div class="w-full my-auto py-4">
-        <label class="block text-gray-600 text-sm font-bold mb-2 pl-1">ジャンル</label>
-        <div class="grid grid-cols-2 gap-3">
-          <button data-genre="衣類" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
-            <i class="fa-solid fa-shirt text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
-            <span class="text-xs font-medium text-gray-700 group-hover:text-red-500">衣類</span>
-          </button>
-          <button data-genre="本" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
-            <i class="fa-solid fa-book text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
-            <span class="text-xs font-medium text-gray-700 group-hover:text-red-500">本</span>
-          </button>
-          <button data-genre="雑貨" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
-            <i class="fa-solid fa-icons text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
-            <span class="text-xs font-medium text-gray-700 group-hover:text-red-500">雑貨</span>
-          </button>
-          <button data-genre="その他" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
-            <i class="fa-solid fa-ellipsis text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
-            <span class="text-xs font-medium text-gray-700 group-hover:text-red-500">その他...</span>
-          </button>
-        </div>
-      </div>
+				<div>
+					<label class="block text-gray-600 text-sm font-bold mb-2 pl-1">ジャンル</label>
+					<div class="grid grid-cols-2 gap-3">
+						<button data-genre="衣類" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
+							<i class="fa-solid fa-shirt text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
+							<span class="text-xs font-medium text-gray-700 group-hover:text-red-500">衣類</span>
+						</button>
+						<button data-genre="本" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
+							<i class="fa-solid fa-book text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
+							<span class="text-xs font-medium text-gray-700 group-hover:text-red-500">本</span>
+						</button>
+						<button data-genre="雑貨" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
+							<i class="fa-solid fa-icons text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
+							<span class="text-xs font-medium text-gray-700 group-hover:text-red-500">雑貨</span>
+						</button>
+						<button data-genre="その他" class="genre-btn flex flex-col items-center justify-center p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition-all cursor-pointer group">
+							<i class="fa-solid fa-ellipsis text-xl text-gray-400 group-hover:text-red-400 mb-1.5"></i>
+							<span class="text-xs font-medium text-gray-700 group-hover:text-red-500">その他...</span>
+						</button>
+					</div>
+				</div>
 
-      <div class="w-full">
-        <button id="to-question-btn" class="w-full py-3.5 bg-red-400 hover:bg-red-500 text-white rounded-xl font-bold text-base tracking-wider shadow-md transition-colors flex items-center justify-center gap-2 cursor-pointer">
-          <span>診断スタート</span>
-          <i class="fa-solid fa-chevron-right text-xs"></i>
-        </button>
-      </div>
-    </main>
+				<div class="mt-4">
+					<button id="to-question-btn" class="w-full py-3.5 bg-red-400 hover:bg-red-500 text-white rounded-xl font-bold text-base tracking-wider shadow-md transition-colors flex items-center justify-center gap-2 cursor-pointer">
+						<span>診断スタート</span>
+						<i class="fa-solid fa-chevron-right text-xs"></i>
+					</button>
+				</div>
+			</div>
+		</main>
 
-    <main id="page-question" class="page-content hidden flex-1 flex flex-col justify-between px-6 py-6 bg-gray-50 overflow-y-auto">
-      <div class="text-center">
-        <span id="target-item-name" class="text-xs bg-gray-200 text-gray-600 px-3 py-1 rounded-full font-medium">対象のモノ</span>
-      </div>
+		<main id="page-question" class="page-content hidden flex-1 flex flex-col justify-between px-6 py-6 bg-gray-50 w-full">
+			<div class="max-w-md mx-auto w-full flex-1 flex flex-col justify-center gap-6 py-4">
+				<div class="text-center">
+					<span id="target-item-name" class="text-xs bg-gray-200 text-gray-600 px-3 py-1 rounded-full font-medium">対象のモノ</span>
+				</div>
 
-      <div class="w-full my-auto">
-        <div id="question-card" class="w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-          <div class="p-6 border-b border-gray-100 min-h-[130px] flex flex-col justify-center">
-            <span id="question-number" class="text-red-400 font-bold text-lg mb-1 block">Q1</span>
-            <p id="question-text" class="text-gray-800 text-base font-medium leading-relaxed">質問文</p>
-          </div>
+				<div id="question-card" class="w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+					<div class="p-6 border-b border-gray-100 min-h-[140px] flex flex-col justify-center">
+						<span id="question-number" class="text-red-400 font-bold text-lg mb-1 block">Q1</span>
+						<p id="question-text" class="text-gray-800 text-base font-medium leading-relaxed">質問文</p>
+					</div>
           
-          <div id="answer-buttons-container" class="grid grid-cols-2 divide-x divide-gray-200 border-t border-gray-100">
-            <button onclick="answerQuestion(true)" class="py-4 text-center font-bold text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors cursor-pointer text-lg">はい</button>
-            <button onclick="answerQuestion(false)" class="py-4 text-center font-bold text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors cursor-pointer text-lg">いいえ</button>
+					<div id="answer-buttons-container" class="grid grid-cols-2 divide-x divide-gray-200 border-t border-gray-100">
+						<button onclick="answerQuestion(false)" class="py-4 text-center font-bold text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors cursor-pointer text-lg">いいえ</button>
+						<button onclick="answerQuestion(true)" class="py-4 text-center font-bold text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors cursor-pointer text-lg">はい</button>
+					</div>
+				</div>
+
+				<button id="card-submit-btn" class="hidden w-full py-5 bg-red-400 hover:bg-red-500 text-white text-center font-bold text-lg tracking-widest transition-colors cursor-pointer flex items-center justify-center gap-2 rounded-2xl shadow-md">
+					<span>診断する</span>
+					<i class="fa-solid fa-chevron-right text-sm"></i>
+				</button>
+
+        <div class="flex justify-center mt-4">
+          <div class="flex items-center gap-8 text-gray-400 font-bold text-xl select-none">
+            <button id="prev-btn" onclick="prevQuestion()" class="p-2 hover:text-gray-700 disabled:opacity-30 disabled:hover:text-gray-400 cursor-pointer disabled:cursor-not-allowed" disabled>&lt;</button>
+            <span id="question-progress" class="text-sm font-medium text-gray-500">1 / 4</span>
+            <button id="next-btn" onclick="nextQuestion()" class="p-2 hover:text-gray-700 disabled:opacity-30 disabled:hover:text-gray-400 cursor-pointer disabled:cursor-not-allowed" disabled>&gt;</button>
           </div>
         </div>
-
-        <button id="card-submit-btn" class="hidden w-full py-5 bg-red-400 hover:bg-red-500 text-white text-center font-bold text-lg tracking-widest transition-colors cursor-pointer flex items-center justify-center gap-2 rounded-2xl shadow-md">
-          <span>診断する</span>
-          <i class="fa-solid fa-chevron-right text-sm"></i>
-        </button>
-      </div>
-
-      <div class="w-full flex justify-center">
-        <div class="flex items-center gap-8 text-gray-400 font-bold text-xl select-none">
-          <button id="prev-btn" onclick="prevQuestion()" class="p-2 hover:text-gray-700 disabled:opacity-30 disabled:hover:text-gray-400 cursor-pointer disabled:cursor-not-allowed" disabled>&lt;</button>
-          <span id="question-progress" class="text-sm font-medium text-gray-500">1 / 4</span>
-          <button id="next-btn" onclick="nextQuestion()" class="p-2 hover:text-gray-700 disabled:opacity-30 disabled:hover:text-gray-400 cursor-pointer disabled:cursor-not-allowed" disabled>&gt;</button>
-        </div>
-      </div>
-    </main>
-
-    <main id="page-result" class="page-content hidden flex-1 flex flex-col justify-between px-6 py-6 bg-gray-50 overflow-y-auto">
-      <div class="text-center">
-        <span class="text-xs bg-red-100 text-red-500 px-3 py-1 rounded-full font-bold">診断結果</span>
-        <h2 id="result-item-title" class="text-base font-bold text-gray-700 mt-2 px-2 truncate">対象のモノ</h2>
-        <p class="text-gray-400 text-[11px] mt-0.5">ナビが出したおすすめの選択肢です</p>
-      </div>
-
-      <div class="text-center my-auto py-4">
-        <p id="result-status-text" class="text-2xl font-black tracking-wider text-gray-800">結果テキスト</p>
-      </div>
-
-      <div id="result-buttons-container" class="w-full flex flex-col gap-3 px-2 mb-4">
-        <button id="btn-action-delete" class="w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer">捨てる</button>
-        <button id="btn-action-keep" class="w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer">いったん保留</button>
-        <button id="btn-action-save" class="w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer">残す</button>
-      </div>
-
-      <div class="w-full pt-3 border-t border-gray-200">
-        <button onclick="startDiagnosticNew()" class="w-full py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2">
-          <i class="fa-solid fa-arrow-rotate-left text-[10px]"></i>
-          <span>もう一度診断する</span>
-        </button>
-      </div>
-    </main>
-
-    <main id="page-keepbox" class="page-content hidden flex-1 flex flex-col justify-start px-4 py-4 bg-gray-50 overflow-hidden">
-      
-      <div class="text-center mb-2 shrink-0">
-        <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">保留ボックス</span>
-      </div>
-
-      <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs mb-3 flex flex-col gap-2 h-[84px] justify-center shrink-0">
-        <div class="flex justify-between items-center h-6">
-          <span class="text-xs text-gray-500 font-bold"><i class="fa-solid fa-arrows-up-down mr-1"></i>並び替え</span>
-          <button id="sort-days-btn" onclick="toggleSortOrder()" class="text-[11px] font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-md transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
-            <span>登録順</span>
-            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+        <div class="flex justify-start mt-2">
+          <button onclick="switchPage('input')" class="relative pr-4 pl-6 py-2 bg-green-600 text-white text-xs font-bold shadow-xs hover:bg-green-700 transition-colors cursor-pointer select-none tracking-wider" style="clip-path: polygon(12px 0%, 100% 0%, 100% 100%, 12px 100%, 0% 50%);">
+            入力画面に戻る
           </button>
         </div>
-        <div class="flex gap-1 overflow-x-auto pb-0.5 text-[11px] select-none scrollbar-none items-center h-7">
-          <button onclick="filterGenre('すべて')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-green-500 text-white font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap">すべて</button>
-          <button onclick="filterGenre('衣類')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">衣類</button>
-          <button onclick="filterGenre('本')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">本</button>
-          <button onclick="filterGenre('雑貨')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">雑貨</button>
-          <button onclick="filterGenre('その他')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">その他</button>
-        </div>
-      </div>
+			</div>
+		</main>
 
-      <div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-2.5 min-h-0" id="keepbox-list-container">
-        </div>
+		<main id="page-result" class="page-content hidden flex-1 flex flex-col justify-between px-6 py-6 bg-gray-50 w-full">
+			<div class="max-w-md mx-auto w-full flex-1 flex flex-col justify-center gap-6 py-4">
+				<div class="text-center">
+					<span class="text-xs bg-red-100 text-red-500 px-3 py-1 rounded-full font-bold">診断結果</span>
+					<h2 id="result-item-title" class="text-base font-bold text-gray-700 mt-2 px-2 truncate">対象のモノ</h2>
+					<p class="text-gray-400 text-[11px] mt-0.5">ナビが出したおすすめの選択肢です</p>
+				</div>
 
-      <div class="w-full pt-3 border-t border-gray-200 mt-3 shrink-0">
-        <button onclick="switchPage('top')" class="w-full py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2">
-          <i class="fa-solid fa-house text-[10px]"></i>
-          <span>トップへ戻る</span>
-        </button>
-      </div>
-    </main>
+				<div class="text-center py-6">
+					<p id="result-status-text" class="text-2xl font-black tracking-wider text-gray-800">結果テキスト</p>
+				</div>
 
-    <main id="page-complete" class="page-content hidden flex-1 flex flex-col justify-between px-8 py-10 bg-white overflow-y-auto">
-      <div class="w-full my-auto text-center flex flex-col items-center gap-4">
-        <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500 text-4xl shadow-xs">
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <div>
-          <h2 class="text-2xl font-black text-gray-800 tracking-wider mb-1">完了！</h2>
-          <p class="text-green-600 font-bold text-base">ナイス判断です。</p>
-        </div>
-      </div>
+				<div id="result-buttons-container" class="w-full flex flex-col gap-3 px-2">
+					<button id="btn-action-delete" class="w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer">捨てる</button>
+					<button id="btn-action-keep" class="w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer">いったん保留</button>
+					<button id="btn-action-save" class="w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer">残す</button>
+				</div>
 
-      <div class="w-full flex flex-col gap-3 pt-6">
-        <button onclick="switchPage('top')" class="w-full py-4 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl shadow-md transition-colors text-center cursor-pointer">
-          トップへ
-        </button>
-        <button onclick="startDiagnosticNew()" class="w-full py-3.5 bg-white border-2 border-gray-800 text-gray-800 font-bold rounded-xl hover:bg-gray-50 transition-colors text-center cursor-pointer">
-          続けて診断
-        </button>
-      </div>
-    </main>
+				<div class="pt-3 border-t border-gray-200 mt-2">
+					<button onclick="startDiagnosticNew()" class="w-full py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2">
+						<i class="fa-solid fa-arrow-rotate-left text-[10px]"></i>
+						<span>もう一度診断する</span>
+					</button>
+				</div>
+			</div>
+		</main>
 
-    <main id="page-help" class="page-content hidden flex-1 flex flex-col justify-between px-5 py-5 bg-gray-50 overflow-hidden">
-      <div class="text-center mb-3 shrink-0">
-        <span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">ヘルプ・使い方</span>
-      </div>
+		<main id="page-keepbox" class="page-content hidden flex-1 flex flex-col justify-start px-4 py-4 bg-gray-50 w-full">
+			<div class="max-w-2xl mx-auto w-full flex flex-col flex-1">
+				<div class="text-center mb-3 shrink-0">
+					<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">保留ボックス</span>
+				</div>
 
-      <div class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm">
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs">
-          <div class="flex items-start gap-2.5">
-            <span class="font-black text-red-400 text-base">Q.</span>
-            <h3 class="font-bold text-gray-800 pt-0.5 leading-tight">このアプリはどんな時に使うの？</h3>
-          </div>
-          <p class="text-gray-600 mt-2 pl-5 text-xs leading-relaxed border-l-2 border-gray-100">
-            「部屋を片付けたいけれど、捨てるかどうか迷ってしまう…」そんなモノがある時に使ってください。ナビの質問に答えるだけで、あなたの本当の気持ちを整理します。
-          </p>
-        </div>
+				<div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs mb-4 flex flex-col gap-2 justify-center shrink-0">
+					<div class="flex justify-between items-center h-6">
+						<span class="text-xs text-gray-500 font-bold"><i class="fa-solid fa-arrows-up-down mr-1"></i>並び替え</span>
+						<button id="sort-days-btn" onclick="toggleSortOrder()" class="text-[11px] font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-md transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
+							<span>登録順</span>
+							<i class="fa-solid fa-chevron-down text-[9px]"></i>
+						</button>
+					</div>
+					<div class="flex gap-1 overflow-x-auto pb-0.5 text-[11px] select-none scrollbar-none items-center h-7">
+						<button onclick="filterGenre('すべて')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-green-500 text-white font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap">すべて</button>
+						<button onclick="filterGenre('衣類')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">衣類</button>
+						<button onclick="filterGenre('本')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">本</button>
+						<button onclick="filterGenre('雑貨')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">雑貨</button>
+						<button onclick="filterGenre('その他')" class="genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap">その他</button>
+					</div>
+				</div>
 
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs">
-          <div class="flex items-start gap-2.5">
-            <span class="font-black text-green-500 text-base">Q.</span>
-            <h3 class="font-bold text-gray-800 pt-0.5 leading-tight">「保留ボックス」ってなに？</h3>
-          </div>
-          <p class="text-gray-600 mt-2 pl-5 text-xs leading-relaxed border-l-2 border-gray-100">
-            診断で「いったん保留」になったモノが保管される場所です。30日間の期限がつき、残り10日を切るとトップ画面でお知らせします。焦らずゆっくり考えてみてください。
-          </p>
-        </div>
+				<div class="flex-1 overflow-y-auto pr-1 grid grid-cols-1 md:grid-cols-2 gap-3 content-start" id="keepbox-list-container">
+				</div>
 
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs">
-          <div class="flex items-start gap-2.5">
-            <span class="font-black text-sky-400 text-base">Q.</span>
-            <h3 class="font-bold text-gray-800 pt-0.5 leading-tight">診断の基準はどうなってるの？</h3>
-          </div>
-          <p class="text-gray-600 mt-2 pl-5 text-xs leading-relaxed border-l-2 border-gray-100">
-            直近で使ったか、お気に入りか、買い直したいか、という3つのシンプルな質問から、独自の基準で「残す」「保留」「捨てる」のおすすめを導き出しています。
-          </p>
-        </div>
-      </div>
+				<div class="w-full pt-4 border-t border-gray-200 mt-4 shrink-0 max-w-md mx-auto">
+					<button onclick="switchPage('top')" class="w-full py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2">
+						<i class="fa-solid fa-house text-[10px]"></i>
+						<span>トップへ戻る</span>
+					</button>
+				</div>
+			</div>
+		</main>
 
-      <div class="w-full pt-3 border-t border-gray-200 mt-3 shrink-0">
-        <button onclick="switchPage('top')" class="w-full py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2">
-          <i class="fa-solid fa-house text-[10px]"></i>
-          <span>トップへ戻る</span>
-        </button>
-      </div>
-    </main>
+		<main id="page-complete" class="page-content hidden flex-1 flex flex-col justify-between px-6 py-8 bg-white w-full">
+			<div class="max-w-md mx-auto w-full flex-1 flex flex-col justify-center gap-8">
+				<div class="text-center flex flex-col items-center gap-4">
+					<div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500 text-4xl shadow-xs">
+						<i class="fa-solid fa-circle-check"></i>
+					</div>
+					<div>
+						<h2 class="text-2xl font-black text-gray-800 tracking-wider mb-1">完了！</h2>
+						<p class="text-green-600 font-bold text-base">ナイス判断です。</p>
+					</div>
+				</div>
 
-    <footer class="py-3 text-center text-[10px] text-gray-400 border-t border-gray-50 bg-white shrink-0">
-      &copy; 選ぶナビ
-    </footer>
+				<div class="w-full flex flex-col gap-3 pt-4">
+					<button id="complete-back-keepbox-btn" onclick="openKeepBox()" class="hidden w-full py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl shadow-md transition-colors text-center cursor-pointer flex items-center justify-center gap-2">
+						<i class="fa-solid fa-box-open text-sm"></i>
+						<span>保留ボックスに戻る</span>
+					</button>
+					<button id="complete-to-top-btn" onclick="switchPage('top')" class="w-full py-4 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl shadow-md transition-colors text-center cursor-pointer">
+						トップへ
+					</button>
+					<button id="complete-continue-btn" onclick="startDiagnosticNew()" class="w-full py-3.5 bg-white border-2 border-gray-800 text-gray-800 font-bold rounded-xl hover:bg-gray-50 transition-colors text-center cursor-pointer">
+						続けて診断
+					</button>
+				</div>
+			</div>
+		</main>
 
-  </div>
+		<main id="page-help" class="page-content hidden flex-1 flex flex-col justify-between px-5 py-5 bg-gray-50 w-full">
+			<div class="max-w-2xl mx-auto w-full flex flex-col flex-1">
+				<div class="text-center mb-4 shrink-0">
+					<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">ヘルプ・使い方</span>
+				</div>
 
-  <script>
-    const QUESTIONS = [
-      { id: 1, text: "過去「1ヶ月以内」にこれを使ったり、触ったりしましたか？" },
-      { id: 2, text: "これを見たとき、手にとったときに「ワクワク」や「お気に入り」の気持ちがありますか？" },
-      { id: 3, text: "もし今日これを無くしてしまったら、もう一度お金を払ってでも買いたいですか？" }
-    ];
+				<div class="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-3 pr-1 text-sm content-start">
+					<div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs h-fit">
+						<div class="flex items-start gap-2.5">
+							<span class="font-black text-red-400 text-base">Q.</span>
+							<h3 class="font-bold text-gray-800 pt-0.5 leading-tight">このアプリはどんな時に使うの？</h3>
+						</div>
+						<p class="text-gray-600 mt-2 pl-5 text-xs leading-relaxed border-l-2 border-gray-100">
+							「部屋を片付けたいけれど、捨てるかどうか迷ってしまう…」そんなモノがある時に使ってください。ナビの質問に答えるだけで、あなたの本当の気持ちを整理します。
+						</p>
+					</div>
 
-    let keepBoxItems = [
-      { id: 101, name: "去年の冬に着たウールのコート", genre: "衣類", daysLeft: 25 },
-      { id: 102, name: "読みかけのビジネス書", genre: "本", daysLeft: 3 }, // 💡 初期検知用の緊急アイテム
-      { id: 103, name: "使い道の決まらない可愛い空き箱", genre: "雑貨", daysLeft: 12 }
-    ];
+					<div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs h-fit">
+						<div class="flex items-start gap-2.5">
+							<span class="font-black text-green-500 text-base">Q.</span>
+							<h3 class="font-bold text-gray-800 pt-0.5 leading-tight">「保留ボックス」ってなに？</h3>
+						</div>
+						<p class="text-gray-600 mt-2 pl-5 text-xs leading-relaxed border-l-2 border-gray-100">
+							診断で「いったん保留」になったモノが保管される場所です。30日間の期限がつき、残り10日を切るとトップ画面でお知らせします。焦らずゆっくり考えてみてください。
+					</div>
 
-    let userAnswers = [null, null, null];
-    let currentStepIndex = 0; 
-    const TOTAL_STEPS = 4; 
+					<div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs h-fit md:col-span-2">
+						<div class="flex items-start gap-2.5">
+							<span class="font-black text-sky-400 text-base">Q.</span>
+							<h3 class="font-bold text-gray-800 pt-0.5 leading-tight">診断の基準はどうなってるの？</h3>
+						</div>
+						<p class="text-gray-600 mt-2 pl-5 text-xs leading-relaxed border-l-2 border-gray-100">
+							直近で使ったか、お気に入りか、買い直したいか、という3つのシンプルな質問から、独自の基準で「残す」「保留」「捨てる」のおすすめを導き出しています。
+						</p>
+					</div>
+				</div>
+
+				<div class="w-full pt-4 border-t border-gray-200 mt-4 shrink-0 max-w-md mx-auto">
+					<button onclick="switchPage('top')" class="w-full py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2">
+						<i class="fa-solid fa-house text-[10px]"></i>
+						<span>トップへ戻る</span>
+					</button>
+				</div>
+			</div>
+		</main>
+
+		<footer class="py-3 text-center text-[10px] text-gray-400 border-t border-gray-50 bg-white shrink-0">
+			&copy; LivTrar
+		</footer>
+
+	</div>
+
+	<script>
+		const QUESTIONS = [
+			{ id: 1, text: "過去「1ヶ月以内」にこれを使ったり、触ったりしましたか？" },
+			{ id: 2, text: "これを見たとき、手にとったときに「ワクワク」や「お気に入り」の気持ちがありますか？" },
+			{ id: 3, text: "もし今日これを無くしてしまったら、もう一度お金を払ってでも買いたいですか？" }
+		];
+
+		let keepBoxItems = [
+			{ id: 101, name: "去年の冬に着たウールのコート", genre: "衣類", daysLeft: 25 },
+			{ id: 102, name: "読みかけのビジネス書", genre: "本", daysLeft: 3 }, 
+			{ id: 103, name: "使い道の決まらない可愛い空き箱", genre: "雑貨", daysLeft: 12 }
+		];
+
+		let userAnswers = [null, null, null];
+		let currentStepIndex = 0; 
+		const TOTAL_STEPS = 4; 
     
-    let selectedGenreFilter = "すべて"; 
-    let isSortByDaysNear = false; 
-    let currentSelectedGenre = "その他";
+		let selectedGenreFilter = "すべて"; 
+		let isSortByDaysNear = false; 
+		let currentSelectedGenre = "その他";
 
-    // DOM要素
-    const menuBtn = document.getElementById('menu-btn');
-    const closeBtn = document.getElementById('close-btn');
-    const navMenu = document.getElementById('nav-menu');
-    const logo = document.getElementById('logo');
-    const startDiagnosticBtn = document.getElementById('start-diagnostic-btn');
-    const toQuestionBtn = document.getElementById('to-question-btn');
-    const itemInput = document.getElementById('item-input');
-    const targetItemName = document.getElementById('target-item-name');
-    const questionCard = document.getElementById('question-card');
-    const cardSubmitBtn = document.getElementById('card-submit-btn');
+		// DOM要素
+		const menuBtn = document.getElementById('menu-btn');
+		const closeBtn = document.getElementById('close-btn');
+		const navMenu = document.getElementById('nav-menu');
+		const logo = document.getElementById('logo');
+		const startDiagnosticBtn = document.getElementById('start-diagnostic-btn');
+		const toQuestionBtn = document.getElementById('to-question-btn');
+		const itemInput = document.getElementById('item-input');
+		const targetItemName = document.getElementById('target-item-name');
+		const questionCard = document.getElementById('question-card');
+		const cardSubmitBtn = document.getElementById('card-submit-btn');
 
-    const headerBadge = document.getElementById('header-badge');
-    const menuBadge = document.getElementById('menu-badge'); // 💡 お知らせ横のバッジ
-    const topNoticeBtn = document.getElementById('top-notice-btn');
+		const headerBadge = document.getElementById('header-badge');
+		const menuBadge = document.getElementById('menu-badge'); 
+		const topNoticeBtn = document.getElementById('top-notice-btn');
+		const backKeepboxBtn = document.getElementById('complete-back-keepbox-btn'); 
+		const toTopBtn = document.getElementById('complete-to-top-btn');
+		const continueBtn = document.getElementById('complete-continue-btn');
 
-    // --- メニューの開閉 ---
-    menuBtn.addEventListener('click', () => navMenu.classList.remove('hidden'));
-    closeBtn.addEventListener('click', () => navMenu.classList.add('hidden'));
-    navMenu.addEventListener('click', (e) => {
-      if (e.target === navMenu) navMenu.classList.add('hidden');
-    });
+		// --- メニューの開閉 ---
+		menuBtn.addEventListener('click', () => navMenu.classList.remove('hidden'));
+		closeBtn.addEventListener('click', () => navMenu.classList.add('hidden'));
+		navMenu.addEventListener('click', (e) => {
+			if (e.target === navMenu) navMenu.classList.add('hidden');
+		});
 
-    // --- 画面切り替え ---
-    function switchPage(pageId) {
-      document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
-      document.getElementById(`page-${pageId}`).classList.remove('hidden');
-      navMenu.classList.add('hidden');
-      updateNoticeBadges();
-    }
+		// --- 画面切り替え ---
+		function switchPage(pageId) {
+			document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
+			document.getElementById(`page-${pageId}`).classList.remove('hidden');
+			navMenu.classList.add('hidden');
+			updateNoticeBadges();
+		}
 
-    // 💡 お知らせバッジの自動カウント・表示切り替え
-    function updateNoticeBadges() {
-      const urgentCount = keepBoxItems.filter(item => item.daysLeft <= 10).length;
+		function showCompletePage(isFromKeepBox) {
+			if (isFromKeepBox) {
+				backKeepboxBtn.classList.remove('hidden'); 
+				toTopBtn.className = "w-full py-4 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl shadow-md transition-colors text-center cursor-pointer text-base";
+				continueBtn.className = "w-full py-4 bg-white border-2 border-gray-800 text-gray-800 font-bold rounded-xl hover:bg-gray-50 transition-colors text-center cursor-pointer text-base";
+			} else {
+				backKeepboxBtn.classList.add('hidden');    
+				toTopBtn.className = "w-full py-3.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl shadow-xs transition-colors text-center cursor-pointer text-sm";
+				continueBtn.className = "w-full py-5 bg-white border-2 border-gray-800 text-gray-800 font-black rounded-xl hover:bg-gray-50 shadow-md transition-colors text-center cursor-pointer text-base tracking-wider";
+			}
+			switchPage('complete');
+		}
 
-      if (urgentCount > 0) {
-        headerBadge.textContent = urgentCount;
-        headerBadge.classList.remove('hidden');
+		function updateNoticeBadges() {
+			const urgentCount = keepBoxItems.filter(item => item.daysLeft <= 10).length;
+
+			if (urgentCount > 0) {
+				headerBadge.textContent = urgentCount;
+				headerBadge.classList.remove('hidden');
         
-        // 💡 修正点：メニュー内の「お知らせ」横の赤丸を更新
-        menuBadge.textContent = urgentCount;
-        menuBadge.classList.remove('hidden');
+				menuBadge.textContent = urgentCount;
+				menuBadge.classList.remove('hidden');
 
-        topNoticeBtn.textContent = `お知らせ：残り10日以内のモノが ${urgentCount} 件あります！`;
-        topNoticeBtn.className = "w-full py-4 bg-red-100 border border-red-200 text-red-950 rounded-xl text-md font-bold hover:bg-red-200 transition-colors cursor-pointer text-center animate-pulse";
-      } else {
-        headerBadge.classList.add('hidden');
-        menuBadge.classList.add('hidden');
+				topNoticeBtn.textContent = `お知らせ：残り10日以内のモノが ${urgentCount} 件あります！`;
+				topNoticeBtn.className = "w-full py-4 bg-red-100 border border-red-200 text-red-950 rounded-xl text-md font-bold hover:bg-red-200 transition-colors cursor-pointer text-center animate-pulse";
+			} else {
+				headerBadge.classList.add('hidden');
+				menuBadge.classList.add('hidden');
         
-        topNoticeBtn.textContent = "お知らせはありません";
-        topNoticeBtn.className = "w-full py-4 bg-gray-100 border border-gray-200 text-gray-400 rounded-xl text-sm font-medium hover:bg-gray-100 transition-colors cursor-not-allowed text-center";
-      }
-    }
+				topNoticeBtn.textContent = "お知らせはありません";
+				topNoticeBtn.className = "w-full py-4 bg-gray-100 border border-gray-200 text-gray-400 rounded-xl text-sm font-medium hover:bg-gray-100 transition-colors cursor-not-allowed text-center";
+			}
+		}
 
-    // 診断初期化リセット開始
-    function startDiagnosticNew() {
-      itemInput.value = "";
-      currentSelectedGenre = "その他";
-      genreButtons.forEach(b => {
-        b.classList.remove('border-red-400', 'bg-red-50/50');
-        const icon = b.querySelector('i');
-        if (icon) {
-          icon.classList.add('text-gray-400');
-          icon.classList.remove('text-red-400');
-        }
-        const span = b.querySelector('span');
-        if (span) span.className = "text-xs font-medium text-gray-700 group-hover:text-red-500";
-      });
-      switchPage('input');
-    }
+		function startDiagnosticNew() {
+			itemInput.value = "";
+			currentSelectedGenre = "その他";
+			genreButtons.forEach(b => {
+				b.classList.remove('border-red-400', 'bg-red-50/50');
+				const icon = b.querySelector('i');
+				if (icon) {
+					icon.classList.add('text-gray-400');
+					icon.classList.remove('text-red-400');
+				}
+				const span = b.querySelector('span');
+				if (span) span.className = "text-xs font-medium text-gray-700 group-hover:text-red-500";
+			});
+			switchPage('input');
+		}
 
-    startDiagnosticBtn.addEventListener('click', startDiagnosticNew);
-    logo.addEventListener('click', () => switchPage('top'));
+		startDiagnosticBtn.addEventListener('click', startDiagnosticNew);
+		logo.addEventListener('click', () => switchPage('top'));
 
-    // 入力完了 -> 質問開始
-    toQuestionBtn.addEventListener('click', () => {
-      const itemName = itemInput.value.trim() || "入力されたモノ";
-      targetItemName.textContent = `対象：${itemName} [${currentSelectedGenre}]`;
-      currentStepIndex = 0;
-      userAnswers = [null, null, null]; 
-      updateQuestionUI();
-      switchPage('question');
-    });
+		toQuestionBtn.addEventListener('click', () => {
+			const itemName = itemInput.value.trim() || "入力されたモノ";
+			targetItemName.textContent = `対象：${itemName} [${currentSelectedGenre}]`;
+			currentStepIndex = 0;
+			userAnswers = [null, null, null]; 
+			updateQuestionUI();
+			switchPage('question');
+		});
 
-    // --- 診断質問画面の表示制御 ---
-    function updateQuestionUI() {
-      document.getElementById('question-progress').textContent = `${currentStepIndex + 1} / ${TOTAL_STEPS}`;
-      document.getElementById('prev-btn').disabled = (currentStepIndex === 0);
+		function updateQuestionUI() {
+			document.getElementById('question-progress').textContent = `${currentStepIndex + 1} / ${TOTAL_STEPS}`;
+			document.getElementById('prev-btn').disabled = (currentStepIndex === 0);
 
-      if (currentStepIndex < 3) {
-        const currentQ = QUESTIONS[currentStepIndex];
-        document.getElementById('question-number').textContent = `Q${currentQ.id}`;
-        document.getElementById('question-text').textContent = currentQ.text;
-        questionCard.classList.remove('hidden');    
-        cardSubmitBtn.classList.add('hidden');      
-        document.getElementById('next-btn').disabled = (userAnswers[currentStepIndex] === null);
-      } else {
-        questionCard.classList.add('hidden');       
-        cardSubmitBtn.classList.remove('hidden');   
-        document.getElementById('next-btn').disabled = true;
-      }
-    }
+			if (currentStepIndex < 3) {
+				const currentQ = QUESTIONS[currentStepIndex];
+				document.getElementById('question-number').textContent = `Q${currentQ.id}`;
+				document.getElementById('question-text').textContent = currentQ.text;
+				questionCard.classList.remove('hidden');    
+				cardSubmitBtn.classList.add('hidden');      
+				document.getElementById('next-btn').disabled = (userAnswers[currentStepIndex] === null);
+			} else {
+				questionCard.classList.add('hidden');       
+				cardSubmitBtn.classList.remove('hidden');   
+				document.getElementById('next-btn').disabled = true;
+			}
+		}
 
-    function answerQuestion(isYes) {
-      userAnswers[currentStepIndex] = isYes; 
-      for (let i = currentStepIndex + 1; i < userAnswers.length; i++) {
-        userAnswers[i] = null;
-      }
-      currentStepIndex++;
-      updateQuestionUI();
-    }
+		function answerQuestion(isYes) {
+			userAnswers[currentStepIndex] = isYes; 
+			for (let i = currentStepIndex + 1; i < userAnswers.length; i++) {
+				userAnswers[i] = null;
+			}
+			currentStepIndex++;
+			updateQuestionUI();
+		}
 
-    function prevQuestion() {
-      if (currentStepIndex > 0) {
-        currentStepIndex--;
-        updateQuestionUI();
-      }
-    }
+		function prevQuestion() {
+			if (currentStepIndex > 0) {
+				currentStepIndex--;
+				updateQuestionUI();
+			}
+		}
     
-    function nextQuestion() {
-      if (currentStepIndex < TOTAL_STEPS - 1 && userAnswers[currentStepIndex] !== null) {
-        currentStepIndex++;
-        updateQuestionUI();
-      }
-    }
+		function nextQuestion() {
+			if (currentStepIndex < TOTAL_STEPS - 1 && userAnswers[currentStepIndex] !== null) {
+				currentStepIndex++;
+				updateQuestionUI();
+			}
+		}
 
-    // --- 「診断する」結果算出 ---
-    cardSubmitBtn.addEventListener('click', () => {
-      const itemName = itemInput.value.trim() || "入力されたモノ";
-      document.getElementById('result-item-title').textContent = `「${itemName}」の診断結果`;
+		cardSubmitBtn.addEventListener('click', () => {
+			const itemName = itemInput.value.trim() || "入力されたモノ";
+			document.getElementById('result-item-title').textContent = `「${itemName}」の診断結果`;
 
-      const yesCount = userAnswers.filter(ans => ans === true).length;
-      let finalResult = "keep"; 
+			const yesCount = userAnswers.filter(ans => ans === true).length;
+			let finalResult = "keep"; 
 
-      if (yesCount >= 2 || (userAnswers[1] === true && userAnswers[2] === true)) {
-        finalResult = "save";   
-      } else if (yesCount === 0 || (userAnswers[0] === true && userAnswers[1] === false && userAnswers[2] === false)) {
-        finalResult = "delete"; 
-      }
+			if (yesCount >= 2 || (userAnswers[1] === true && userAnswers[2] === true)) {
+				finalResult = "save";   
+			} else if (yesCount === 0 || (userAnswers[0] === true && userAnswers[1] === false && userAnswers[2] === false)) {
+				finalResult = "delete"; 
+			}
 
-      const resultStatusText = document.getElementById('result-status-text');
-      const btnDelete = document.getElementById('btn-action-delete');
-      const btnKeep = document.getElementById('btn-action-keep');
-      const btnSave = document.getElementById('btn-action-save');
-      const container = document.getElementById('result-buttons-container');
+			const resultStatusText = document.getElementById('result-status-text');
+			const btnDelete = document.getElementById('btn-action-delete');
+			const btnKeep = document.getElementById('btn-action-keep');
+			const btnSave = document.getElementById('btn-action-save');
+			const container = document.getElementById('result-buttons-container');
 
-      [btnDelete, btnKeep, btnSave].forEach(btn => {
-        btn.className = "w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer";
-      });
-      container.innerHTML = ""; 
+			[btnDelete, btnKeep, btnSave].forEach(btn => {
+				btn.className = "w-full font-bold rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center cursor-pointer";
+			});
+			container.innerHTML = ""; 
 
-      if (finalResult === "delete") {
-        resultStatusText.textContent = "捨てるべきです";
-        resultStatusText.className = "text-2xl font-black tracking-wider text-red-500";
-        btnDelete.classList.add('py-5', 'text-lg', 'bg-red-400', 'text-white', 'hover:bg-red-500', 'order-1');
-        btnKeep.classList.add('py-3', 'text-sm', 'bg-green-100', 'text-green-800', 'hover:bg-green-200', 'order-2');
-        btnSave.classList.add('py-1.5', 'text-xs', 'bg-sky-50', 'text-sky-400', 'hover:bg-sky-100', 'order-3');
+			if (finalResult === "delete") {
+				resultStatusText.textContent = "捨てるべきです";
+				resultStatusText.className = "text-2xl font-black tracking-wider text-red-500";
+				btnDelete.classList.add('py-5', 'text-lg', 'bg-red-400', 'text-white', 'hover:bg-red-500', 'order-1');
+				btnKeep.classList.add('py-3', 'text-sm', 'bg-green-100', 'text-green-800', 'hover:bg-green-200', 'order-2');
+				btnSave.classList.add('py-1.5', 'text-xs', 'bg-sky-50', 'text-sky-400', 'hover:bg-sky-100', 'order-3');
 
-      } else if (finalResult === "save") {
-        resultStatusText.textContent = "残しましょう";
-        resultStatusText.className = "text-2xl font-black tracking-wider text-sky-500";
-        btnSave.classList.add('py-5', 'text-lg', 'bg-sky-200', 'text-sky-900', 'hover:bg-sky-300', 'order-1');
-        btnKeep.classList.add('py-3', 'text-sm', 'bg-green-100', 'text-green-800', 'hover:bg-green-200', 'order-2');
-        btnDelete.classList.add('py-1.5', 'text-xs', 'bg-red-50', 'text-red-400', 'hover:bg-red-100', 'order-3');
+			} else if (finalResult === "save") {
+				resultStatusText.textContent = "残しましょう";
+				resultStatusText.className = "text-2xl font-black tracking-wider text-sky-500";
+				btnSave.classList.add('py-5', 'text-lg', 'bg-sky-200', 'text-sky-900', 'hover:bg-sky-300', 'order-1');
+				btnKeep.classList.add('py-3', 'text-sm', 'bg-green-100', 'text-green-800', 'hover:bg-green-200', 'order-2');
+				btnDelete.classList.add('py-1.5', 'text-xs', 'bg-red-50', 'text-red-400', 'hover:bg-red-100', 'order-3');
 
-      } else {
-        resultStatusText.textContent = "いったん保留にしましょう";
-        resultStatusText.className = "text-xl font-black tracking-wider text-green-600";
-        btnKeep.classList.add('py-5', 'text-lg', 'bg-green-400', 'text-white', 'hover:bg-green-500', 'order-1');
-        btnSave.classList.add('py-3', 'text-sm', 'bg-sky-100', 'text-sky-800', 'hover:bg-sky-200', 'order-2');
-        btnDelete.classList.add('py-1.5', 'text-xs', 'bg-red-50', 'text-red-400', 'hover:bg-red-100', 'order-3');
-      }
+			} else {
+				resultStatusText.textContent = "いったん保留にしましょう";
+				resultStatusText.className = "text-xl font-black tracking-wider text-green-600";
+				btnKeep.classList.add('py-5', 'text-lg', 'bg-green-400', 'text-white', 'hover:bg-green-500', 'order-1');
+				btnSave.classList.add('py-3', 'text-sm', 'bg-sky-100', 'text-sky-800', 'hover:bg-sky-200', 'order-2');
+				btnDelete.classList.add('py-1.5', 'text-xs', 'bg-red-50', 'text-red-400', 'hover:bg-red-100', 'order-3');
+			}
 
-      container.appendChild(btnDelete);
-      container.appendChild(btnKeep);
-      container.appendChild(btnSave);
+			container.appendChild(btnDelete);
+			container.appendChild(btnKeep);
+			container.appendChild(btnSave);
 
-      switchPage('result');
-    });
+			switchPage('result');
+		});
 
-    document.getElementById('btn-action-delete').addEventListener('click', () => { switchPage('complete'); });
-    document.getElementById('btn-action-save').addEventListener('click', () => { switchPage('complete'); });
+		document.getElementById('btn-action-delete').addEventListener('click', () => { showCompletePage(false); });
+		document.getElementById('btn-action-save').addEventListener('click', () => { showCompletePage(false); });
 
-    // 「保留にする」を押した時
-    document.getElementById('btn-action-keep').addEventListener('click', () => {
-      const itemName = itemInput.value.trim() || "診断したモノ";
-      const newItem = {
-        id: Date.now(),
-        name: itemName,
-        genre: currentSelectedGenre, 
-        daysLeft: 3 // テスト用に残り3日で追加
-      };
-      keepBoxItems.unshift(newItem); 
-      openKeepBox(); 
-    });
+		document.getElementById('btn-action-keep').addEventListener('click', () => {
+			const itemName = itemInput.value.trim() || "診断したモノ";
+			const newItem = {
+				id: Date.now(),
+				name: itemName,
+				genre: currentSelectedGenre, 
+				daysLeft: 30 
+			};
+			keepBoxItems.unshift(newItem); 
+			openKeepBox(); 
+		});
 
+		function openKeepBox() {
+			selectedGenreFilter = "すべて";
+			isSortByDaysNear = false;
+			document.getElementById('sort-days-btn').querySelector('span').textContent = "登録順";
+			updateTabActiveStyles();
+			renderKeepBoxList();
+			switchPage('keepbox');
+		}
 
-    // ==========================================
-    // 保留ボックス画面の描画・ソート・絞り込み
-    // ==========================================
-    function openKeepBox() {
-      selectedGenreFilter = "すべて";
-      isSortByDaysNear = false;
-      document.getElementById('sort-days-btn').querySelector('span').textContent = "登録順";
-      updateTabActiveStyles();
-      renderKeepBoxList();
-      switchPage('keepbox');
-    }
+		function filterGenre(genre) {
+			selectedGenreFilter = genre;
+			updateTabActiveStyles();
+			renderKeepBoxList();
+		}
 
-    function filterGenre(genre) {
-      selectedGenreFilter = genre;
-      updateTabActiveStyles();
-      renderKeepBoxList();
-    }
+		function toggleSortOrder() {
+			isSortByDaysNear = !isSortByDaysNear;
+			const btnSpan = document.getElementById('sort-days-btn').querySelector('span');
+			btnSpan.textContent = isSortByDaysNear ? "期間が近い順" : "登録順";
+			renderKeepBoxList();
+		}
 
-    function toggleSortOrder() {
-      isSortByDaysNear = !isSortByDaysNear;
-      const btnSpan = document.getElementById('sort-days-btn').querySelector('span');
-      btnSpan.textContent = isSortByDaysNear ? "期間が近い順" : "登録順";
-      renderKeepBoxList();
-    }
+		function updateTabActiveStyles() {
+			const tabs = document.querySelectorAll('.genre-tab-btn');
+			tabs.forEach(tab => {
+				if (tab.textContent === selectedGenreFilter) {
+					tab.className = "genre-tab-btn shrink-0 px-2.5 py-1 bg-green-500 text-white font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap";
+				} else {
+					tab.className = "genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap";
+				}
+			});
+		}
 
-    function updateTabActiveStyles() {
-      const tabs = document.querySelectorAll('.genre-tab-btn');
-      tabs.forEach(tab => {
-        if (tab.textContent === selectedGenreFilter) {
-          tab.className = "genre-tab-btn shrink-0 px-2.5 py-1 bg-green-500 text-white font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap";
-        } else {
-          tab.className = "genre-tab-btn shrink-0 px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap";
-        }
-      });
-    }
+		function renderKeepBoxList() {
+			const container = document.getElementById('keepbox-list-container');
+			container.innerHTML = "";
 
-    function renderKeepBoxList() {
-      const container = document.getElementById('keepbox-list-container');
-      container.innerHTML = "";
+			let displayItems = [...keepBoxItems];
+			if (selectedGenreFilter !== "すべて") {
+				displayItems = displayItems.filter(item => item.genre === selectedGenreFilter);
+			}
 
-      let displayItems = [...keepBoxItems];
-      if (selectedGenreFilter !== "すべて") {
-        displayItems = displayItems.filter(item => item.genre === selectedGenreFilter);
-      }
+			if (isSortByDaysNear) {
+				displayItems.sort((a, b) => a.daysLeft - b.daysLeft);
+			}
 
-      if (isSortByDaysNear) {
-        displayItems.sort((a, b) => a.daysLeft - b.daysLeft);
-      }
+			if (displayItems.length === 0) {
+				container.innerHTML = `
+					<div class="text-center py-12 text-gray-400 text-sm my-auto col-span-full w-full">
+						<i class="fa-solid fa-box-open text-3xl mb-2 text-gray-300 block"></i>
+						該当するモノはありません
+					</div>`;
+				return;
+			}
 
-      if (displayItems.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-12 text-gray-400 text-sm my-auto w-full">
-            <i class="fa-solid fa-box-open text-3xl mb-2 text-gray-300 block"></i>
-            該当するモノはありません
-          </div>`;
-        return;
-      }
-
-      displayItems.forEach(item => {
-        const card = document.createElement('div');
-        card.className = "w-full bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex flex-col gap-3 shrink-0";
+			displayItems.forEach(item => {
+				const card = document.createElement('div');
+				card.className = "w-full bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex flex-col justify-between gap-3 shrink-0";
         
-        let genreBadgeColor = "bg-gray-100 text-gray-600";
-        if (item.genre === "衣類") genreBadgeColor = "bg-red-50 text-red-600 border border-red-100";
-        if (item.genre === "本") genreBadgeColor = "bg-amber-50 text-amber-700 border border-amber-100";
-        if (item.genre === "雑貨") genreBadgeColor = "bg-purple-50 text-purple-600 border border-purple-100";
+				let genreBadgeColor = "bg-gray-100 text-gray-600";
+				if (item.genre === "衣類") genreBadgeColor = "bg-red-50 text-red-600 border border-red-100";
+				if (item.genre === "本") genreBadgeColor = "bg-amber-50 text-amber-700 border border-amber-100";
+				if (item.genre === "雑貨") genreBadgeColor = "bg-purple-50 text-purple-600 border border-purple-100";
 
-        const dayBadgeClass = item.daysLeft <= 10 
-          ? "bg-red-50 text-red-600 border border-red-200 font-black animate-pulse" 
-          : "bg-amber-50 text-amber-700 border border-amber-200 font-bold";
+				const dayBadgeClass = item.daysLeft <= 10 
+					? "bg-red-50 text-red-600 border border-red-200 font-black animate-pulse" 
+					: "bg-amber-50 text-amber-700 border border-amber-200 font-bold";
 
-        card.innerHTML = `
-          <div class="flex justify-between items-start gap-2">
-            <div class="flex flex-col gap-1 flex-1">
-              <span class="text-[10px] px-1.5 py-0.5 rounded font-bold self-start ${genreBadgeColor}">${item.genre}</span>
-              <h3 class="font-bold text-gray-800 text-sm leading-snug">${item.name}</h3>
-            </div>
-            <span class="text-xs px-2 py-0.5 rounded-md shrink-0 border ${dayBadgeClass}">
-              あと ${item.daysLeft}日
-            </span>
-          </div>
+				card.innerHTML = `
+					<div class="flex justify-between items-start gap-2">
+						<div class="flex flex-col gap-1 flex-1">
+							<span class="text-[10px] px-1.5 py-0.5 rounded font-bold self-start ${genreBadgeColor}">${item.genre}</span>
+							<h3 class="font-bold text-gray-800 text-sm leading-snug">${item.name}</h3>
+						</div>
+						<span class="text-xs px-2 py-0.5 rounded-md shrink-0 border ${dayBadgeClass}">
+							あと ${item.daysLeft}日
+						</span>
+					</div>
           
-          <div class="grid grid-cols-2 gap-2 mt-1">
-            <button onclick="handleKeepBoxAction(${item.id}, 'delete')" class="py-2 text-xs font-bold bg-red-50 text-red-500 hover:bg-red-100 rounded-lg border border-red-100 transition-colors cursor-pointer text-center whitespace-nowrap">
-              今すぐ捨てる
-            </button>
-            <button onclick="handleKeepBoxAction(${item.id}, 'save')" class="py-2 text-xs font-bold bg-sky-50 text-sky-600 hover:bg-sky-100 rounded-lg border border-sky-100 transition-colors cursor-pointer text-center whitespace-nowrap">
-              残す
-            </button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
+					<div class="grid grid-cols-2 gap-2 mt-1">
+						<button onclick="handleKeepBoxAction(${item.id}, 'delete')" class="py-2 text-xs font-bold bg-red-50 text-red-500 hover:bg-red-100 rounded-lg border border-red-100 transition-colors cursor-pointer text-center whitespace-nowrap">
+							今すぐ捨てる
+						</button>
+						<button onclick="handleKeepBoxAction(${item.id}, 'save')" class="py-2 text-xs font-bold bg-sky-50 text-sky-600 hover:bg-sky-100 rounded-lg border border-sky-100 transition-colors cursor-pointer text-center whitespace-nowrap">
+							残す
+						</button>
+					</div>
+				`;
+				container.appendChild(card);
+			});
+		}
 
-    function handleKeepBoxAction(id, actionType) {
-      keepBoxItems = keepBoxItems.filter(item => item.id !== id);
-      renderKeepBoxList(); 
-      switchPage('complete'); 
-    }
+		function handleKeepBoxAction(id, actionType) {
+			keepBoxItems = keepBoxItems.filter(item => item.id !== id);
+			renderKeepBoxList(); 
+			showCompletePage(true); 
+		}
 
-    const genreButtons = document.querySelectorAll('.genre-btn');
-    genreButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        genreButtons.forEach(b => {
-          b.classList.remove('border-red-400', 'bg-red-50/50');
-          const icon = b.querySelector('i');
-          if (icon) {
-            icon.classList.add('text-gray-400');
-            icon.classList.remove('text-red-400');
-          }
-          const span = b.querySelector('span');
-          if (span) span.className = "text-xs font-medium text-gray-700 group-hover:text-red-500";
-        });
+		const genreButtons = document.querySelectorAll('.genre-btn');
+		genreButtons.forEach(btn => {
+			btn.addEventListener('click', () => {
+				genreButtons.forEach(b => {
+					b.classList.remove('border-red-400', 'bg-red-50/50');
+					const icon = b.querySelector('i');
+					if (icon) {
+						icon.classList.add('text-gray-400');
+						icon.classList.remove('text-red-400');
+					}
+					const span = b.querySelector('span');
+					if (span) span.className = "text-xs font-medium text-gray-700 group-hover:text-red-500";
+				});
 
-        btn.classList.add('border-red-400', 'bg-red-50/50');
-        const activeIcon = btn.querySelector('i');
-        if (activeIcon) {
-          activeIcon.classList.remove('text-gray-400');
-          activeIcon.classList.add('text-red-400');
-        }
-        const activeSpan = btn.querySelector('span');
-        if (activeSpan) {
-          activeSpan.className = "text-xs font-bold text-red-500";
-        }
+				btn.classList.add('border-red-400', 'bg-red-50/50');
+				const activeIcon = btn.querySelector('i');
+				if (activeIcon) {
+					activeIcon.classList.remove('text-gray-400');
+					activeIcon.classList.add('text-red-400');
+				}
+				const activeSpan = btn.querySelector('span');
+				if (activeSpan) {
+					activeSpan.className = "text-xs font-bold text-red-500";
+				}
 
-        currentSelectedGenre = btn.getAttribute('data-genre') || "その他";
-      });
-    });
+				currentSelectedGenre = btn.getAttribute('data-genre') || "その他";
+			});
+		});
 
-    // 初回起動時
-    updateNoticeBadges();
-  </script>
+		updateNoticeBadges();
+	</script>
 
 </body>
 </html>
