@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>選ぶナビ - 完全版プロトタイプ</title>
+	<title>LeavTrar</title>
 	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -12,8 +12,9 @@
 	<div class="relative w-full max-w-4xl bg-white md:my-6 md:shadow-lg md:rounded-xl flex flex-col justify-between overflow-hidden min-h-screen md:min-h-[640px]">
     
 		<header class="flex justify-between items-center px-6 py-4 border-b border-green-200 bg-green-700 z-30 sticky top-0 shrink-0">
-			<div id="logo" class="cursor-pointer flex items-center select-none shrink-0 min-h-10">
-				<img src="logo2.png"  class="h-10 w-auto object-contain rounded-sm text-lg font-bold text-gray-800 tracking-wider">
+			<div id="logo" class="cursor-pointer flex items-center gap-2 select-none shrink-0 min-h-10">
+				<img src="logo3.png"  class="h-10 w-auto object-contain rounded-sm text-lg font-bold text-gray-800 tracking-wider">
+				<span class="text-white text-xl font-black tracking-wider">LeavTrar</span>
 			</div>
       
 			<button id="menu-btn" class="relative p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" aria-label="メニューを開く">
@@ -88,6 +89,10 @@
 					</div>
 				</div>
 
+				<div id="input-error-msg" class="hidden text-center text-sm font-bold text-red-500 bg-red-50 border border-red-200 py-2 rounded-xl mt-2 animate-bounce">
+					<i class="fa-solid fa-triangle-exclamation mr-1"></i>診断するモノの名前を入力してください！
+				</div>
+
 				<div class="mt-4">
 					<button id="to-question-btn" class="w-full py-3.5 bg-red-400 hover:bg-red-500 text-white rounded-xl font-bold text-base tracking-wider shadow-md transition-colors flex items-center justify-center gap-2 cursor-pointer">
 						<span>診断スタート</span>
@@ -120,7 +125,11 @@
 					<i class="fa-solid fa-chevron-right text-sm"></i>
 				</button>
 
-        <div class="flex justify-center mt-4">
+        <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden mt-4 shadow-inner">
+          <div id="progress-bar-inner" class="bg-gradient-to-r from-sky-400 to-blue-500 h-full w-0 transition-all duration-300 ease-out"></div>
+        </div>
+
+        <div class="flex justify-center mt-2">
           <div class="flex items-center gap-8 text-gray-400 font-bold text-xl select-none">
             <button id="prev-btn" onclick="prevQuestion()" class="p-2 hover:text-gray-700 disabled:opacity-30 disabled:hover:text-gray-400 cursor-pointer disabled:cursor-not-allowed" disabled>&lt;</button>
             <span id="question-progress" class="text-sm font-medium text-gray-500">1 / 4</span>
@@ -271,7 +280,7 @@
 		</main>
 
 		<footer class="py-3 text-center text-[10px] text-gray-400 border-t border-gray-50 bg-white shrink-0">
-			&copy; LivTrar
+			&copy; LeavTrar
 		</footer>
 
 	</div>
@@ -385,7 +394,20 @@
 		logo.addEventListener('click', () => switchPage('top'));
 
 		toQuestionBtn.addEventListener('click', () => {
-			const itemName = itemInput.value.trim() || "入力されたモノ";
+			const itemName = itemInput.value.trim();
+			const errorMsg = document.getElementById('input-error-msg');
+
+			// バリデーションチェック
+			if (!itemName) {
+				errorMsg.classList.remove('hidden'); // エラーを表示
+				itemInput.classList.add('border-red-400', 'ring-1', 'ring-red-400'); // 入力欄を赤枠に
+				return; // ここで処理を中断して進ませない
+			}
+
+			// 入力されている場合はエラーを隠す
+			errorMsg.classList.add('hidden');
+			itemInput.classList.remove('border-red-400', 'ring-1', 'ring-red-400');
+
 			targetItemName.textContent = `対象：${itemName} [${currentSelectedGenre}]`;
 			currentStepIndex = 0;
 			userAnswers = [null, null, null]; 
@@ -397,6 +419,9 @@
 			document.getElementById('question-progress').textContent = `${currentStepIndex + 1} / ${TOTAL_STEPS}`;
 			document.getElementById('prev-btn').disabled = (currentStepIndex === 0);
 
+			// プログレスバーの進捗率を計算して幅を変更 (例: 1歩目=25%, 4歩目=100%)
+			const progressPercent = ((currentStepIndex + 1) / TOTAL_STEPS) * 100;
+			document.getElementById('progress-bar-inner').style.width = `${progressPercent}%`;
 			if (currentStepIndex < 3) {
 				const currentQ = QUESTIONS[currentStepIndex];
 				document.getElementById('question-number').textContent = `Q${currentQ.id}`;
